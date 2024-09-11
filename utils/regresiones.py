@@ -46,7 +46,7 @@ def calcular_sigma2(X, Y, betas):
     sigma2 = SSE / (n - X.shape[1])  # Ajuste de grados de libertad
     return sigma2
 
-def mallows_cp(X_train, Y_train, X_test, Y_test, betas_full):
+def mallows_cp(X_train, Y_train, X_test, Y_test, betas_full):   
     """
     Calcula el estadístico de Mallows Cp.
     
@@ -77,3 +77,21 @@ def mallows_cp(X_train, Y_train, X_test, Y_test, betas_full):
     
     # Calculo el estadístico Cp
     return (SSE_p / sigma2) + 2 * p - n
+
+def ridge_regression(X, Y, alpha):
+    """
+    Realiza una regresión Ridge.
+    
+    Parámetros:
+    - X: Matriz de diseño (n muestras x p predictores).
+    - Y: Vector de respuestas (n muestras).
+    - alpha: Parámetro de regularización (valor de penalización).
+
+    Retorna:
+    - betas: Coeficientes del modelo ajustado.
+    """
+    n, p = X.shape
+    # Regularización con alpha (añadir alpha a la diagonal de la matriz X^T X)
+    I = np.eye(p)  # Matriz identidad de tamaño p
+    betas = np.linalg.inv(X.T @ X + alpha * I) @ X.T @ Y
+    return betas
